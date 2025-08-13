@@ -22,7 +22,7 @@ class Heading extends StatelessWidget {
     return Padding(
       padding: responsivePadding(context),
       child: Text(
-        "Our Unforgettable Moments",
+        "Our Unforgettable Moments ",
         style: TextStyle(
           color: Colors.white,
           fontSize: responsiveFont(context, 28),
