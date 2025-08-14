@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:ui';
+import 'package:boyboy_cb_gallery_v2/widget/Main_Page_Widget/glassfield.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -118,7 +119,7 @@ class _AddNoteSheetState extends State<_AddNoteSheet> {
                   ),
                 ),
                 const SizedBox(height: 6),
-                _GlassField(
+                GlassField(
                   child: TextField(
                     controller: _msgCtrl,
                     maxLength: 300,
@@ -146,7 +147,7 @@ class _AddNoteSheetState extends State<_AddNoteSheet> {
                   ),
                 ),
                 const SizedBox(height: 6),
-                _GlassField(
+                GlassField(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -253,23 +254,6 @@ class _AddNoteSheetState extends State<_AddNoteSheet> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _GlassField extends StatelessWidget {
-  final Widget child;
-  const _GlassField({required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withOpacity(0.35)),
-      ),
-      child: child,
     );
   }
 }
