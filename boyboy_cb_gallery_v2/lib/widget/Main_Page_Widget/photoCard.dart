@@ -35,7 +35,7 @@ class PhotoCard extends StatelessWidget {
                   const BorderRadius.vertical(top: Radius.circular(12)),
               child: SizedBox(
                 height: 250, // smaller height
-                child: _buildImage(),
+                child: _buildImage(context),
               ),
             ),
 
@@ -70,18 +70,213 @@ class PhotoCard extends StatelessWidget {
     );
   }
 
-  Widget _buildImage() {
+  Widget _buildImage(BuildContext context) {
     if (imagePath.startsWith('http')) {
-      return Image.network(
-        imagePath,
-        fit: BoxFit.cover,
+      return GestureDetector(
+        onTap: () => _showFullScreenImage(context, imagePath),
+        child: Image.network(
+          imagePath,
+          fit: BoxFit.cover,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) return child;
+            return Container(
+              color: Colors.grey[300],
+              child: Center(
+                child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes!
+                      : null,
+                  valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
+                ),
+              ),
+            );
+          },
+          errorBuilder: (context, error, stackTrace) {
+            debugPrint('Image loading error: $error');
+            return Container(
+              color: Colors.grey[300],
+              child: const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.broken_image,
+                      size: 50,
+                      color: Colors.grey,
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      'Image failed to load',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      );
+    } else if (imagePath.isNotEmpty) {
+      return GestureDetector(
+        onTap: () => _showFullScreenImage(context, imagePath),
+        child: Image.file(
+          File(imagePath),
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            debugPrint('Local image loading error: $error');
+            return Container(
+              color: Colors.grey[300],
+              child: const Center(
+                child: Icon(
+                  Icons.broken_image,
+                  size: 50,
+                  color: Colors.grey,
+                ),
+              ),
+            );
+          },
+        ),
       );
     } else {
-      return Image.file(
-        File(imagePath),
-        fit: BoxFit.cover,
+      // No image path provided
+      return Container(
+        color: Colors.grey[300],
+        child: const Center(
+          child: Icon(
+            Icons.image_not_supported,
+            size: 50,
+            color: Colors.grey,
+          ),
+        ),
       );
     }
+  }
+
+  void _showFullScreenImage(BuildContext context, String imagePath) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          insetPadding: EdgeInsets.zero,
+          child: Stack(
+            children: [
+              // Full screen image
+              Positioned.fill(
+                child: GestureDetector(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: Container(
+                    color: Colors.black,
+                    child: Center(
+                      child: InteractiveViewer(
+                        panEnabled: true,
+                        boundaryMargin: const EdgeInsets.all(20.0),
+                        minScale: 0.5,
+                        maxScale: 4.0,
+                        child: imagePath.startsWith('http')
+                            ? Image.network(
+                                imagePath,
+                                fit: BoxFit.contain,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    color: Colors.grey[800],
+                                    child: const Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.broken_image,
+                                            size: 100,
+                                            color: Colors.grey,
+                                          ),
+                                          SizedBox(height: 16),
+                                          Text(
+                                            'Image failed to load',
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              )
+                            : Image.file(
+                                File(imagePath),
+                                fit: BoxFit.contain,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    color: Colors.grey[800],
+                                    child: const Center(
+                                      child: Icon(
+                                        Icons.broken_image,
+                                        size: 100,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              // Close button
+              Positioned(
+                top: 40,
+                right: 20,
+                child: GestureDetector(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.5),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                  ),
+                ),
+              ),
+              // Zoom instructions
+              Positioned(
+                bottom: 40,
+                left: 20,
+                right: 20,
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: const Text(
+                    'Pinch to zoom • Tap to close',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   String _formatDate(DateTime date) {
