@@ -152,8 +152,7 @@ class GalleryController extends ChangeNotifier {
 
       // Step 2: Create document in database
       debugPrint('Creating document in database...');
-      final documentId =
-          _idCounter++; // Use incrementing counter for unique 32-bit int IDs
+      final documentId = ID.unique();
       final document = await _db.createDocument(
         databaseId: AppwriteConfig.databaseId,
         collectionId: AppwriteConfig.collectionId,
