@@ -17,7 +17,6 @@ class GalleryController extends ChangeNotifier {
   bool get loading => _loading;
 
   // Static counter for generating unique IDs
-  static int _idCounter = 1;
 
   GalleryController() {
     _client = Client()
