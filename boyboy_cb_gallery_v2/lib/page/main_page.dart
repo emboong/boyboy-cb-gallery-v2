@@ -163,23 +163,23 @@ class _MainPageState extends State<MainPage> {
                         ),
                       ),
                       // Connection test button in separate SliverToBoxAdapter
-                      SliverToBoxAdapter(
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                          child: Center(
-                            child: ElevatedButton.icon(
-                              onPressed: () =>
-                                  _showConnectionTestDialog(context, ctrl),
-                              icon: const Icon(Icons.wifi),
-                              label: const Text('Test Connection'),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white.withOpacity(0.2),
-                                foregroundColor: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                      // SliverToBoxAdapter(
+                      //   child: Padding(
+                      //     padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                      //     child: Center(
+                      //       child: ElevatedButton.icon(
+                      //         onPressed: () =>
+                      //             _showConnectionTestDialog(context, ctrl),
+                      //         icon: const Icon(Icons.wifi),
+                      //         label: const Text('Test Connection'),
+                      //         style: ElevatedButton.styleFrom(
+                      //           backgroundColor: Colors.white.withOpacity(0.2),
+                      //           foregroundColor: Colors.white,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       if (ctrl.loading && items.isEmpty)
                         const SliverToBoxAdapter(
                           child: Padding(
