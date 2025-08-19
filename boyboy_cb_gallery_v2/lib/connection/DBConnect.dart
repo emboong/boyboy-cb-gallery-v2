@@ -1,14 +1,14 @@
 class AppwriteConfig {
   static const endpoint =
-      'https://nyc.cloud.appwrite.io/v1'; // e.g. https://cloud.appwrite.io/v1
-  static const projectId = '689d70d00035793d137c';
+      'https://fra.cloud.appwrite.io/v1'; // e.g. https://cloud.appwrite.io/v1
+  static const projectId = '68a3de440003f55f2a03';
 
   // Database + collection that will store gallery documents
-  static const databaseId = '689d92be001ee71b56fa';
-  static const collectionId = '689d92c50019daed7888';
+  static const databaseId = '68a3de8d001b1632077a';
+  static const collectionId = '68a3debd001c715040a1';
 
   // Storage bucket for images
-  static const bucketId = '689d973b001a052e540e';
+  static const bucketId = '68a3e00d0028eb74c375';
 
   // If your bucket is set to public (recommended for simple Image.network)
   // set this to true. Otherwise, you'll need auth and use bytes rendering.
@@ -17,10 +17,10 @@ class AppwriteConfig {
   /// Validate the configuration
   static bool get isValid {
     return endpoint.isNotEmpty &&
-           projectId.isNotEmpty &&
-           databaseId.isNotEmpty &&
-           collectionId.isNotEmpty &&
-           bucketId.isNotEmpty;
+        projectId.isNotEmpty &&
+        databaseId.isNotEmpty &&
+        collectionId.isNotEmpty &&
+        bucketId.isNotEmpty;
   }
 
   /// Get configuration summary for debugging

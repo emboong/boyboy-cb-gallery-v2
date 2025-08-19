@@ -49,30 +49,33 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
-  void _showConnectionTestDialog(BuildContext context, GalleryController ctrl) async {
+  void _showConnectionTestDialog(
+      BuildContext context, GalleryController ctrl) async {
     final result = await ctrl.testConnection();
     if (context.mounted) {
       showDialog(
         context: context,
         builder: (dialogContext) => AlertDialog(
-          title: Text(result['success'] ? 'Connection Success' : 'Connection Failed'),
+          title: Text(
+              result['success'] ? 'Connection Success' : 'Connection Failed'),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Show configuration
-                const Text('Configuration:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text('Configuration:',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8),
-                ...AppwriteConfig.configSummary.entries.map((entry) => 
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 2),
-                    child: Text('${entry.key}: ${entry.value}', style: const TextStyle(fontSize: 12)),
-                  )
-                ),
+                ...AppwriteConfig.configSummary.entries.map((entry) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      child: Text('${entry.key}: ${entry.value}',
+                          style: const TextStyle(fontSize: 12)),
+                    )),
                 const SizedBox(height: 16),
                 // Show connection results
-                const Text('Connection Test:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text('Connection Test:',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8),
                 ...result.entries.map((entry) {
                   if (entry.key == 'success') return const SizedBox.shrink();
@@ -83,20 +86,23 @@ class _MainPageState extends State<MainPage> {
                 }).toList(),
                 const SizedBox(height: 16),
                 // Show common issues
-                const Text('Common Issues & Solutions:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text('Common Issues & Solutions:',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8),
-                ...AppwriteConfig.commonIssues.entries.map((entry) => 
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 2),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('• ${entry.key}:', style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12)),
-                        Text('  ${entry.value}', style: const TextStyle(fontSize: 11, color: Colors.grey)),
-                      ],
-                    ),
-                  )
-                ),
+                ...AppwriteConfig.commonIssues.entries.map((entry) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('• ${entry.key}:',
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w500, fontSize: 12)),
+                          Text('  ${entry.value}',
+                              style: const TextStyle(
+                                  fontSize: 11, color: Colors.grey)),
+                        ],
+                      ),
+                    )),
               ],
             ),
           ),
@@ -162,7 +168,8 @@ class _MainPageState extends State<MainPage> {
                           padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                           child: Center(
                             child: ElevatedButton.icon(
-                              onPressed: () => _showConnectionTestDialog(context, ctrl),
+                              onPressed: () =>
+                                  _showConnectionTestDialog(context, ctrl),
                               icon: const Icon(Icons.wifi),
                               label: const Text('Test Connection'),
                               style: ElevatedButton.styleFrom(
